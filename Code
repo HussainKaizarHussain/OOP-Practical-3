@@ -1,0 +1,127 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+class IntegerArray {
+private:
+    int* data;
+    size_t size;
+
+public:
+    // 1. Default Constructor
+    IntegerArray() : data(nullptr), size(0) {
+        cout << "[Default Constructor] Created empty array.\n";
+    }
+
+    // Parameterized Constructor
+    IntegerArray(size_t n, int initialValue = 0) : size(n) {
+        data = new int[size];
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = initialValue;
+        }
+        cout << "[Parameterized Constructor] Allocated array of size " << size << ".\n";
+    }
+
+    // RULE OF MEMBER 1: Destructor
+    ~IntegerArray() {
+        delete[] data;
+        cout << "[Destructor] Released dynamically allocated memory.\n";
+    }
+
+    // RULE OF MEMBER 2: Copy Constructor (Deep Copy)
+    IntegerArray(const IntegerArray& other) : size(other.size) {
+        data = new int[size];
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+        cout << "[Copy Constructor] Performed deep copy of size " << size << ".\n";
+    }
+
+    // RULE OF MEMBER 3: Copy Assignment Operator (Deep Copy)
+    IntegerArray& operator=(const IntegerArray& other) {
+        if (this == &other) {
+            return *this; // Self-assignment check
+        }
+        
+        delete[] data; // Free existing resource
+        
+        size = other.size;
+        data = new int[size];
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+        cout << "[Copy Assignment] Copied data from another object.\n";
+        return *this;
+    }
+
+    // RULE OF MEMBER 4: Move Constructor (Resource Transfer)
+    IntegerArray(IntegerArray&& other) noexcept : data(other.data), size(other.size) {
+        other.data = nullptr;
+        other.size = 0;
+        cout << "[Move Constructor] Steals resource ownership safely.\n";
+    }
+
+    // RULE OF MEMBER 5: Move Assignment Operator (Resource Transfer)
+    IntegerArray& operator=(IntegerArray&& other) noexcept {
+        if (this == &other) {
+            return *this; // Self-assignment check
+        }
+        
+        delete[] data; // Free existing resource
+        
+        data = other.data;
+        size = other.size;
+        
+        other.data = nullptr;
+        other.size = 0;
+        cout << "[Move Assignment] Transferred resource ownership via move.\n";
+        return *this;
+    }
+
+    // Utility function to display array elements
+    void display() const {
+        cout << "Array Contents (Size " << size << "): ";
+        if (data == nullptr) {
+            cout << "[Empty / Moved-from]\n";
+            return;
+        }
+        for (size_t i = 0; i < size; ++i) {
+            cout << data[i] << " ";
+        }
+        cout << "\n";
+    }
+};
+
+int main() {
+    cout << "--- 1. Parameterized Constructor ---\n";
+    IntegerArray arr1(4, 10);
+    arr1.display();
+
+    cout << "\n--- 2. Copy Constructor ---\n";
+    IntegerArray arr2 = arr1; // Calls copy constructor
+    arr2.display();
+
+    cout << "\n--- 3. Copy Assignment Operator ---\n";
+    IntegerArray arr3(2, 5);
+    arr3 = arr1; // Calls copy assignment operator
+    arr3.display();
+
+    cout << "\n--- 4. Move Constructor ---\n";
+    IntegerArray arr4(std::move(arr1)); // Calls move constructor
+    cout << "arr1 after move: ";
+    arr1.display();
+    cout << "arr4 after move: ";
+    arr4.display();
+
+    cout << "\n--- 5. Move Assignment Operator ---\n";
+    IntegerArray arr5;
+    arr5 = std::move(arr2); // Calls move assignment operator
+    cout << "arr2 after move: ";
+    arr2.display();
+    cout << "arr5 after move: ";
+    arr5.display();
+
+    cout << "\n--- End of Scope (Destructors will be called automatically) ---\n";
+    return 0;
+}
