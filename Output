@@ -1,0 +1,31 @@
+--- 1. Parameterized Constructor ---
+[Parameterized Constructor] Allocated array of size 4.
+Array Contents (Size 4): 10 10 10 10 
+
+--- 2. Copy Constructor ---
+[Copy Constructor] Performed deep copy of size 4.
+Array Contents (Size 4): 10 10 10 10 
+
+--- 3. Copy Assignment Operator ---
+[Parameterized Constructor] Allocated array of size 2.
+[Copy Assignment] Copied data from another object.
+Array Contents (Size 4): 10 10 10 10 
+
+--- 4. Move Constructor ---
+[Move Constructor] Steals resource ownership safely.
+arr1 after move: Array Contents (Size 0): [Empty / Moved-from]
+arr4 after move: Array Contents (Size 4): 10 10 10 10 
+
+--- 5. Move Assignment Operator ---
+[Default Constructor] Created empty array.
+[Move Assignment] Transferred resource ownership via move.
+arr2 after move: Array Contents (Size 0): [Empty / Moved-from]
+arr5 after move: Array Contents (Size 4): 10 10 10 10 
+
+--- End of Scope (Destructors will be called automatically) ---
+[Destructor] Released dynamically allocated memory.
+[Destructor] Released dynamically allocated memory.
+[Destructor] Released dynamically allocated memory.
+[Destructor] Released dynamically allocated memory.
+[Destructor] Released dynamically allocated memory.
+[Destructor] Released dynamically allocated memory.
